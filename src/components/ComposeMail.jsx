@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { Close, DeleteOutline } from "@mui/icons-material";
 import { useState } from "react";
+import useApi from "../hooks/useApi";
+import { API_URLS } from "../services/api.urls";
 //to style the mui components
 const dialogStyle = {
   height: "90%",
@@ -60,6 +62,7 @@ const SendButton = styled(Button)({
 // Note - sx is used to change the css of internal classes of given MUI components
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
   const [data, setData] = useState({});
+  const sentEmailService = useApi(API_URLS.saveSentEmails);
 
   const onValueChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -76,8 +79,8 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
 
   const config = {
     Host: "smtp-relay.sendinblue.com",
-    Username: "akshaychauke50@gmail.com",
-    Password: "Rp5XhwW1raZxjLU4",
+    Username: process.env.REACT_APP_USERNAME,
+    Password: process.env.REACT_APP_PASSWORD,
     Port: 587,
   };
 
@@ -101,6 +104,26 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
       }).then((message) => alert(message));
     }
 
+    //creating the payload to send information
+    const payload = {
+      to: data.to,
+      from: "akshaychouke50@gmail.com",
+      subject: data.subject,
+      body: data.body,
+      date: new Date(),
+      image: "",
+      name: "Akshay Chouke",
+      starred: false,
+      type: "sent",
+    };
+
+    sentEmailService.call(payload);
+    if (!sentEmailService.error) {
+      setOpenDialog(false);
+      setData({});
+    }else{
+      
+    }
     setOpenDialog(false);
   };
 
