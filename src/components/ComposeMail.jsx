@@ -63,6 +63,7 @@ const SendButton = styled(Button)({
 
 //the main function
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
+
   const [data, setData] = useState({});
   const sentEmailService = useApi(API_URLS.saveSentEmails);
   const saveDraftService = useApi(API_URLS.saveDraftEmails);
@@ -71,19 +72,13 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
     console.log(data);
   };
 
-  //basic config for smtp configuration
-  // const config = {
-  //   Host: "smtp.gmail.com",
-  //   Username: "akshaychauke50@gmail.com",
-  //   Password: "pobivobvjejywjtx",
-  //   Port: 25,
-  // };
-
+  //the necessary configuration for smtp server
   const config = {
-    Host: "smtp-relay.sendinblue.com",
+    Host: "smtp.elasticemail.com",
     Username: process.env.REACT_APP_USERNAME,
     Password: process.env.REACT_APP_PASSWORD,
-    Port: 587,
+    SecureToken: process.env.REACT_APP_SECURE_TOKEN,
+    Port: 2525,
   };
 
   //to close the compose mail dialog box
@@ -117,6 +112,7 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
   //to send send mail when user clicks on send button in compose dialog
   const sendMail = (e) => {
     e.preventDefault();
+
     //setting up the smtp server
     if (window.Email) {
       window.Email.send({
@@ -125,9 +121,8 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
         From: "akshaychauke50@gmail.com",
         Subject: data.subject,
         Body: data.body,
-      }).then((message) => alert(message));
+      }).then((message) => alert(message)).catch((error) => console.error(error));;
     }
-
     //creating the payload to send information which is to be stored in db
     const payload = {
       to: data.to,
