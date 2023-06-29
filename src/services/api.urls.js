@@ -11,7 +11,7 @@ export const API_URLS = {
         endpoint: 'emails',
         method: 'GET'
     },
-    toggleStarredMails: {
+    toggleStarredEmail: {
         endpoint: 'starred',
         method: 'POST'
     },

@@ -5,6 +5,8 @@ import useApi from "../hooks/useApi";
 import { Box, Checkbox, List, ListItem } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
 import Email from "./Email";
+import NoMails from "./comman/NoMails";
+import { EMPTY_TABS } from "../constants/constant";
 const Emails = () => {
   const [selectedEmails, setSelectedEmails] = useState([]); // [id1,id2,id3
   const [refreshScreen, setRefreshScreen] = useState(false); // [id1,id2,id3
@@ -12,11 +14,11 @@ const Emails = () => {
   const { type } = useParams();
   const getEmailsService = useApi(API_URLS.getEmailFromType);
   const moveEmailsToBinService = useApi(API_URLS.moveEmailsToBin);
-
+  const deleteEmailService = useApi(API_URLS.deleteEmails);
   //to get emails from server when type changes
   useEffect(() => {
     getEmailsService.call({}, type);
-  }, [type,refreshScreen]);
+  }, [type, refreshScreen]);
 
   const selectAllEmails = (e) => {
     if (e.target.checked) {
@@ -27,12 +29,12 @@ const Emails = () => {
   };
 
   const deleteSelectedEmails = (e) => {
-    if(type === "bin"){
-      
-    }else{
-      moveEmailsToBinService.call(selectedEmails)
+    if (type === "bin") {
+      deleteEmailService.call(selectedEmails);
+    } else {
+      moveEmailsToBinService.call(selectedEmails);
     }
-    setRefreshScreen((prev)=>!prev)
+    setRefreshScreen((prev) => !prev);
   };
   return (
     <Box
@@ -50,7 +52,7 @@ const Emails = () => {
         }}
       >
         <Checkbox size="small" onChange={(e) => selectAllEmails(e)} />
-        <DeleteOutline onClick={(e)=>deleteSelectedEmails(e)}/>
+        <DeleteOutline onClick={(e) => deleteSelectedEmails(e)} />
       </Box>
       <List>
         {getEmailsService?.response?.map((email) => (
@@ -58,9 +60,13 @@ const Emails = () => {
             key={email._id}
             email={email}
             selectedEmails={selectedEmails}
+            setSelectedEmails={setSelectedEmails}
+            setRefreshScreen={setRefreshScreen}
           />
         ))}
       </List>
+
+      {getEmailsService?.response?.length === 0 && <NoMails message={EMPTY_TABS[type]} />}
     </Box>
   );
 };
