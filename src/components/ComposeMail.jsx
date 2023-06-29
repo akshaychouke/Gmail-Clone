@@ -60,10 +60,12 @@ const SendButton = styled(Button)({
   width: "100px",
 });
 // Note - sx is used to change the css of internal classes of given MUI components
+
+//the main function
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
   const [data, setData] = useState({});
   const sentEmailService = useApi(API_URLS.saveSentEmails);
-
+  const saveDraftService = useApi(API_URLS.saveDraftEmails);
   const onValueChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
     console.log(data);
@@ -87,6 +89,28 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
   //to close the compose mail dialog box
   const closeComposeMail = (e) => {
     e.preventDefault();
+
+    //creating the payload to save information in draft box
+    const payload = {
+      to: data.to,
+      from: "akshaychouke50@gmail.com",
+      subject: data.subject,
+      body: data.body,
+      date: new Date(),
+      image: "",
+      name: "Akshay Chouke",
+      starred: false,
+      type: "drafts",
+    };
+
+    saveDraftService.call(payload);
+    if (!saveDraftService.error) {
+      setOpenDialog(false);
+      setData({});
+    } else {
+    }
+
+    //to close the dialog box
     setOpenDialog(false);
   };
 
@@ -104,7 +128,7 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
       }).then((message) => alert(message));
     }
 
-    //creating the payload to send information
+    //creating the payload to send information which is to be stored in db
     const payload = {
       to: data.to,
       from: "akshaychouke50@gmail.com",
@@ -121,9 +145,10 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
     if (!sentEmailService.error) {
       setOpenDialog(false);
       setData({});
-    }else{
-      
+    } else {
     }
+
+    //to close the dialog box
     setOpenDialog(false);
   };
 

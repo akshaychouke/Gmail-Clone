@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, styled, InputBase, Box } from "@mui/material";
+import { AppBar, Toolbar, InputBase, Box, styled } from "@mui/material";
 import {
   Menu as MenuIcon,
   Tune,
@@ -39,9 +39,9 @@ const OptionsWrapper = styled(Box)({
   width: "100%",
   display: "flex",
   justifyContent: "end",
-
   "& > svg": {
     marginLeft: "20px",
+    cursor: "pointer",
   },
 });
 
@@ -57,11 +57,15 @@ const Header = ({ toggleDrawer }) => {
             style={{ width: 110, marginLeft: 15 }}
             alt="gmailLogo"
           />
+
+          {/* The search bar wrapper */}
           <SearchWrapper>
             <Search color="action" />
-            <InputBase placeholder="Search mail" />
+            <InputBase placeholder="Search mail" type="text" />
             <Tune color="action" />
           </SearchWrapper>
+
+          {/* The right side icons wrapper */}
           <OptionsWrapper>
             <HelpOutlineOutlined color="action" />
             <SettingsOutlined color="action" />
