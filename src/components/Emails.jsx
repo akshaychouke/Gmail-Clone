@@ -7,6 +7,7 @@ import { DeleteOutline } from "@mui/icons-material";
 import Email from "./Email";
 import NoMails from "./comman/NoMails";
 import { EMPTY_TABS } from "../constants/constant";
+import { flushSync } from "react-dom";
 const Emails = () => {
   const [selectedEmails, setSelectedEmails] = useState([]); // [id1,id2,id3
   const [refreshScreen, setRefreshScreen] = useState(false); // [id1,id2,id3
@@ -51,7 +52,10 @@ const Emails = () => {
           alignItems: "center",
         }}
       >
-        <Checkbox size="small" onChange={(e) => selectAllEmails(e)} />
+        <Checkbox
+          size="small"
+          onChange={(e) => selectAllEmails(e)}
+        />
         <DeleteOutline onClick={(e) => deleteSelectedEmails(e)} />
       </Box>
       <List>
@@ -66,7 +70,10 @@ const Emails = () => {
         ))}
       </List>
 
-      {getEmailsService?.response?.length === 0 && <NoMails message={EMPTY_TABS[type]} />}
+      {/* to display then empty page there is not content inside the particular page */}
+      {getEmailsService?.response?.length === 0 && (
+        <NoMails message={EMPTY_TABS[type]} />
+      )}
     </Box>
   );
 };

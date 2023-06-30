@@ -9,6 +9,7 @@ import {
   AppsOutlined,
   AccountCircleOutlined,
 } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 import { gmailLogo } from "../constants/constant";
 
@@ -47,6 +48,7 @@ const OptionsWrapper = styled(Box)({
 
 const Header = ({ toggleDrawer }) => {
   // console.log("This is in header")
+  const navigate = useNavigate();
   return (
     <>
       <StyledAppBar position="static">

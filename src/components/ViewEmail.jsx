@@ -8,6 +8,9 @@ import { API_URLS } from "../services/api.urls";
 //to style the view email page
 const IconWrapper = styled(Box)({
   padding: "15px",
+  "& > svg": {
+    cursor: "pointer",
+  }
 });
 
 const Subject = styled(Typography)({

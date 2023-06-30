@@ -5,6 +5,7 @@ import { routes } from "../routes/routes";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/useApi";
 import { API_URLS } from "../services/api.urls";
+import { addEllipsis } from "../utils/utils";
 const Wrapper = styled(Box)({
   padding: "0 0 0 10px",
   background: "#f2f6fc",
@@ -55,9 +56,8 @@ const Email = ({
   const onValueChange = () => {
     if (selectedEmails.includes(email._id)) {
       setSelectedEmails(selectedEmails.filter((id) => id !== email._id));
-    }
-    else{
-      setSelectedEmails(prevState => [...prevState, email._id]);
+    } else {
+      setSelectedEmails((prevState) => [...prevState, email._id]);
     }
   };
   return (
@@ -94,7 +94,7 @@ const Email = ({
         </Typography>
         <Indicator>Inbox</Indicator>
         <Typography>
-          {email.subject} {email.body && "-"} {email.body}
+          {email.subject} {email.body && "-"} {addEllipsis(email.body)}
         </Typography>
         <Date>
           {new window.Date(email.date).getDate()}

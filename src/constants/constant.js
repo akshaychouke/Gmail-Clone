@@ -26,4 +26,8 @@ export const EMPTY_TABS = {
     heading: "No conversations in Bin.",
     subHeading: "",
   },
+  allmail: {
+    heading: "You do not have message.",
+    subHeading: "",
+  },
 };

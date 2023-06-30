@@ -13,6 +13,7 @@ const SideBar = ({ openDrawer }) => {
         ModalProps={{
           keepMounted: true,
         }}
+        variant="persistent"
         sx={{
           "& .MuiDrawer-paper": {
             marginTop: "64px",
